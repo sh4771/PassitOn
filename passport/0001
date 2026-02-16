@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PassItOn — Garment Passport #0001</title>
+  <meta name="description" content="Garment Passport — Chain of Custody (Future-Facing Ledger)" />
+  <style>
+    :root{
+      --bg:#0b0f0c;
+      --card:#0f1712;
+      --text:#e9f5ec;
+      --muted:#a9c0b0;
+      --line:#1e2b23;
+      --accent:#6ee7a8;
+      --warn:#ffd27a;
+      --danger:#ff8a8a;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(110,231,168,.18), transparent 55%),
+                  radial-gradient(900px 500px at 100% 0%, rgba(255,210,122,.10), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    a{color:inherit}
+    .wrap{
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+    .top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom: 18px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(15,23,18,.7);
+      backdrop-filter: blur(8px);
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(110,231,168,.14);
+    }
+    h1{
+      font-size: 30px;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 56ch;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 780px){
+      .grid{grid-template-columns:1fr}
+      .top{flex-direction:column; align-items:flex-start}
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(15,23,18,.72);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    }
+    .card h2{
+      margin: 0 0 10px;
+      font-size: 15px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .kv{
+      display:grid;
+      grid-template-columns: 170px 1fr;
+      gap: 8px 12px;
+      font-size: 14px;
+    }
+    .k{color: var(--muted)}
+    .v{color: var(--text)}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(11,15,12,.55);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .pill strong{color:var(--text); font-weight:600}
+    .hr{
+      height:1px;
+      background: var(--line);
+      margin: 14px 0;
+    }
+    .note{
+      margin: 10px 0 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .note strong{color:var(--text)}
+    .warn{color: var(--warn)}
+    .danger{color: var(--danger)}
+    .ledger{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 6px;
+    }
+    .entry{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(11,15,12,.55);
+      display:grid;
+      grid-template-columns: 40px 1fr;
+      gap: 10px;
+    }
+    .n{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(110,231,168,.14);
+      border: 1px solid rgba(110,231,168,.25);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .entry h3{
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+    .entry p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 10px;
+    }
+    button{
+      appearance:none;
+      border:1px solid rgba(110,231,168,.35);
+      background: rgba(110,231,168,.12);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 650;
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease;
+    }
+    button:hover{background: rgba(110,231,168,.18)}
+    button:active{transform: translateY(1px)}
+    .ghost{
+      border:1px solid var(--line);
+      background: rgba(11,15,12,.35);
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .tiny{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .footer{
+      margin-top: 14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Garment Passport <span class="mono">#0001</span></h1>
+        <p class="subtitle">
+          A future-facing chain-of-custody ledger. The past production history is largely unknown —
+          the future can be documented.
+        </p>
+      </div>
+      <div class="badge" title="Tap the NFC tag to open this passport page.">
+        <span class="dot"></span>
+        NFC tag active • Scan to learn my history
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Verified Information</h2>
+        <div class="kv">
+          <div class="k">Item</div><div class="v">Columbia GS Orientation T-Shirt</div>
+          <div class="k">Brand</div><div class="v">Hanes Authentic</div>
+          <div class="k">Material</div><div class="v">100% Cotton / 100% Algodón</div>
+          <div class="k">Manufactured in</div><div class="v">Haiti (HT)</div>
+          <div class="k">RN</div><div class="v mono">15763</div>
+          <div class="k">Garment ID</div><div class="v mono">PTO-HT-0001</div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Supply Chain Visibility</h2>
+        <div class="row">
+          <span class="pill"><strong>Fiber origin</strong>: <span class="danger">Unknown</span></span>
+          <span class="pill"><strong>Dyeing facility</strong>: <span class="danger">Unknown</span></span>
+          <span class="pill"><strong>Factory name</strong>: <span class="danger">Not disclosed</span></span>
+        </div>
+        <p class="note">
+          <strong>Note:</strong> This prototype intentionally shows what remains <span class="warn">invisible</span>
+          in typical garment supply chains.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>NFC Micro-Ledger (Tag Payload v1)</h2>
+        <div class="kv">
+          <div class="k">Format</div><div class="v"><span class="mono">PTO|v1</span> (structured text)</div>
+          <div class="k">Stored on tag</div><div class="v">URL + short custody payload</div>
+          <div class="k">Example payload</div>
+          <div class="v mono" id="payloadText">
+            PTO|v1|id=0001|mfg=HT|rn=15763|mat=COT100|t=03|last=2025-12|sig=H3K7Q9
+          </div>
+        </div>
+        <p class="tiny">
+          In Milestone 1, the micro-ledger is a <strong>proof of structure</strong>.
+          The web page visualizes the full ledger and invites the next signature.
+        </p>
+        <div class="row">
+          <button class="ghost" id="copyPayload">Copy payload</button>
+          <button class="ghost" id="resetLocal">Reset demo entries</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:14px;">
+      <h2>Chain of Custody</h2>
+      <div class="ledger" id="ledger"></div>
+
+      <div class="hr"></div>
+
+      <h2>Next Holder</h2>
+      <p class="note" style="margin-top:0;">
+        Tap <strong>I receive this garment</strong> to add a new custody entry (demo stores locally in this browser).
+      </p>
+
+      <div class="row">
+        <button id="receiveBtn">I receive this garment</button>
+        <button class="ghost" id="toggleGeo">Use my location: Off</button>
+      </div>
+
+      <div class="footer">
+        <div>PassItOn prototype • Milestone 1</div>
+        <div class="mono">Last updated: <span id="lastUpdated">—</span></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ---- Config (edit these if you want) ----
+    const GARMENT_ID = "0001";
+    const STORAGE_KEY = `passiton_ledger_${GARMENT_ID}`;
+    const DEFAULT_ENTRIES = [
+      {
+        type: "Distribution",
+        title: "Columbia GS Orientation Event → Recipient: Hana Kim",
+        location: "New York, NY",
+        date: "2025-09",
+        method: "Event distribution"
+      },
+      {
+        type: "Transfer",
+        title: "Hana Kim → Yuna Kim",
+        location: "New York, NY",
+        date: "2025-11",
+        method: "Gift / hand-me-down"
+      },
+      {
+        type: "Transfer",
+        title: "Yuna Kim → Seungeun",
+        location: "New York, NY",
+        date: "2025-12",
+        method: "Gift / hand-me-down"
+      }
+    ];
+
+    // ---- State ----
+    let useGeo = false;
+
+    // ---- Helpers ----
+    function nowMonth() {
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      return `${yyyy}-${mm}`;
+    }
+
+    function formatMonth(ym) {
+      // ym: YYYY-MM
+      const [y,m] = ym.split("-").map(x => parseInt(x,10));
+      const date = new Date(y, m-1, 1);
+      return date.toLocaleString(undefined, { month: "long", year: "numeric" });
+    }
+
+    function loadLedger() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [...DEFAULT_ENTRIES];
+      try { return JSON.parse(raw); } catch { return [...DEFAULT_ENTRIES]; }
+    }
+
+    function saveLedger(entries) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      document.getElementById("lastUpdated").textContent = new Date().toLocaleString();
+    }
+
+    function renderLedger(entries) {
+      const root = document.getElementById("ledger");
+      root.innerHTML = "";
+      entries.forEach((e, i) => {
+        const el = document.createElement("div");
+        el.className = "entry";
+        el.innerHTML = `
+          <div class="n">${i+1}</div>
+          <div>
+            <h3>${e.type}: ${e.title}</h3>
+            <p>${e.location} • ${formatMonth(e.date)} • Method: ${e.method}${e.geo ? ` • Geo: ${e.geo}` : ""}</p>
+          </div>
+        `;
+        root.appendChild(el);
+      });
+
+      // Update payload preview based on latest ledger (simple demo signature)
+      const t = String(entries.length).padStart(2, "0");
+      const last = entries[entries.length - 1]?.date || nowMonth();
+      const sig = demoSig(entries);
+      const payload = `PTO|v1|id=${GARMENT_ID}|mfg=HT|rn=15763|mat=COT100|t=${t}|last=${last}|sig=${sig}`;
+      document.getElementById("payloadText").textContent = payload;
+    }
+
+    function demoSig(entries) {
+      // Milestone 1-friendly "signature": take initials of last receiver + count + month -> compact token
+      // Not cryptographic; it's a readable proof of a chaining rule.
+      const lastTitle = entries[entries.length - 1]?.title || "";
+      const receiver = lastTitle.split("→").pop()?.trim() || "NA";
+      const initials = receiver
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(w => w[0]?.toUpperCase() || "")
+        .join("")
+        .slice(0, 2)
+        .padEnd(2, "X");
+      const count = String(entries.length).padStart(2, "0");
+      const last = (entries[entries.length - 1]?.date || nowMonth()).replace("-", "");
+      return `${initials}${count}${last}`; // e.g., SE03202512
+    }
+
+    async function getGeoString() {
+      if (!("geolocation" in navigator)) return null;
+      return new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const { latitude, longitude } = pos.coords;
+            resolve(`${latitude.toFixed(4)},${longitude.toFixed(4)}`);
+          },
+          () => resolve(null),
+          { enableHighAccuracy: false, timeout: 6000, maximumAge: 600000 }
+        );
+      });
+    }
+
+    // ---- Events ----
+    document.getElementById("receiveBtn").addEventListener("click", async () => {
+      const name = prompt("Your name (for the ledger):");
+      if (!name || !name.trim()) return;
+
+      const city = prompt("City (e.g., New York, NY):", "New York, NY") || "—";
+      const method = prompt("Method (Gift / Donation / Resale / etc.):", "Gift / hand-me-down") || "—";
+      const date = nowMonth();
+
+      let geo = null;
+      if (useGeo) geo = await getGeoString();
+
+      const entries = loadLedger();
+      entries.push({
+        type: "Transfer",
+        title: `Seungeun → ${name.trim()}`,
+        location: city.trim(),
+        date,
+        method: method.trim(),
+        geo
+      });
+
+      saveLedger(entries);
+      renderLedger(entries);
+      alert("Added! (Stored locally for demo.)");
+    });
+
+    document.getElementById("toggleGeo").addEventListener("click", () => {
+      useGeo = !useGeo;
+      document.getElementById("toggleGeo").textContent = `Use my location: ${useGeo ? "On" : "Off"}`;
+    });
+
+    document.getElementById("resetLocal").addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      const entries = loadLedger();
+      saveLedger(entries);
+      renderLedger(entries);
+      alert("Reset complete.");
+    });
+
+    document.getElementById("copyPayload").addEventListener("click", async () => {
+      const text = document.getElementById("payloadText").textContent;
+      try{
+        await navigator.clipboard.writeText(text);
+        alert("Copied payload.");
+      }catch{
+        prompt("Copy this payload:", text);
+      }
+    });
+
+    // ---- Init ----
+    const entries = loadLedger();
+    saveLedger(entries);
+    renderLedger(entries);
+  </script>
+</body>
+</html>
