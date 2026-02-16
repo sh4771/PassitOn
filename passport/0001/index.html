@@ -4,315 +4,453 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PassItOn — Garment Passport #0001</title>
-  <meta name="description" content="Garment Passport — Chain of Custody 
-(Future-Facing Ledger)" />
+  <meta name="description" content="Garment Passport — Chain of Custody (Future-Facing Ledger)" />
+
   <style>
     :root{
-      --bg:#0b0f0c;
-      --card:#0f1712;
-      --text:#e9f5ec;
-      --muted:#a9c0b0;
-      --line:#1e2b23;
-      --accent:#6ee7a8;
-      --warn:#ffd27a;
-      --danger:#ff8a8a;
-      --radius:18px;
+      --bg: #070a08;
+      --panel: rgba(14, 22, 17, .72);
+      --panel2: rgba(10, 15, 12, .62);
+      --stroke: rgba(180, 220, 195, .12);
+      --text: #eaf6ee;
+      --muted: rgba(234, 246, 238, .70);
+      --muted2: rgba(234, 246, 238, .55);
+      --accent: #6ee7a8;
+      --warn: #ffd27a;
+      --danger: #ff8a8a;
+      --radius: 18px;
+
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --shadow2: 0 10px 30px rgba(0,0,0,.25);
+
+      --pad: 16px;
+      --pad2: 14px;
+      --gap: 12px;
+
+      --max: 980px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, 
-Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 20% -10%, 
-rgba(110,231,168,.18), transparent 55%),
-                  radial-gradient(900px 500px at 100% 0%, 
-rgba(255,210,122,.10), transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.35;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 12% -8%, rgba(110,231,168,.18), transparent 60%),
+        radial-gradient(850px 520px at 105% 0%, rgba(255,210,122,.10), transparent 62%),
+        radial-gradient(1100px 820px at 40% 120%, rgba(110,231,168,.08), transparent 55%),
+        var(--bg);
+      line-height: 1.35;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    a{color:inherit}
+
+    a{ color: inherit; }
+
     .wrap{
-      max-width: 900px;
+      max-width: var(--max);
       margin: 0 auto;
-      padding: 28px 18px 48px;
+      padding: 18px 14px 92px; /* extra bottom for sticky action bar */
     }
-    .top{
+
+    /* Top header */
+    .header{
       display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom: 18px;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-    .badge{
+
+    .brandRow{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chip{
       display:inline-flex;
       align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background: rgba(15,23,18,.7);
-      backdrop-filter: blur(8px);
-      font-size: 13px;
+      gap: 10px;
+      padding: 9px 12px;
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(14, 22, 17, .55);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow2);
       color: var(--muted);
+      font-size: 12.5px;
       white-space: nowrap;
     }
     .dot{
-      width:10px;height:10px;border-radius:50%;
+      width: 10px; height: 10px; border-radius: 999px;
       background: var(--accent);
-      box-shadow: 0 0 0 4px rgba(110,231,168,.14);
+      box-shadow: 0 0 0 4px rgba(110,231,168,.13);
+      flex: 0 0 auto;
     }
+
     h1{
-      font-size: 30px;
-      margin: 0 0 8px;
+      margin: 0;
+      font-size: 26px;
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
-    .subtitle{
-      margin:0;
+    .sub{
+      margin: 0;
       color: var(--muted);
-      font-size: 15px;
-      max-width: 56ch;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-      margin-top: 16px;
-    }
-    @media (max-width: 780px){
-      .grid{grid-template-columns:1fr}
-      .top{flex-direction:column; align-items:flex-start}
-    }
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(15,23,18,.72);
-      backdrop-filter: blur(10px);
-      padding: 16px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.25);
-    }
-    .card h2{
-      margin: 0 0 10px;
-      font-size: 15px;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .kv{
-      display:grid;
-      grid-template-columns: 170px 1fr;
-      gap: 8px 12px;
       font-size: 14px;
+      max-width: 62ch;
     }
-    .k{color: var(--muted)}
-    .v{color: var(--text)}
+
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      letter-spacing: .01em;
+    }
+
+    /* Cards */
+    .card{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      padding: var(--pad);
+    }
+
+    .card + .card{
+      margin-top: var(--gap);
+    }
+
+    .sectionTitle{
+      margin: 0 0 10px;
+      font-size: 12.5px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted2);
+    }
+
+    /* Key-value list (mobile-first stacked) */
+    .kv{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .kvRow{
+      display:flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 12px;
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      background: var(--panel2);
+    }
+    .k{ color: var(--muted2); font-size: 12.5px; }
+    .v{ color: var(--text); font-size: 14.5px; }
+
+    /* Pills */
+    .pillRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
     .pill{
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      padding: 6px 10px;
+      gap: 8px;
+      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(11,15,12,.55);
-      font-size: 13px;
+      border: 1px solid var(--stroke);
+      background: rgba(10, 15, 12, .42);
       color: var(--muted);
+      font-size: 12.5px;
     }
-    .pill strong{color:var(--text); font-weight:600}
-    .hr{
-      height:1px;
-      background: var(--line);
-      margin: 14px 0;
-    }
+    .pill strong{ color: var(--text); font-weight: 650; }
+
     .note{
       margin: 10px 0 0;
-      font-size: 14px;
-      color: var(--muted);
-    }
-    .note strong{color:var(--text)}
-    .warn{color: var(--warn)}
-    .danger{color: var(--danger)}
-    .ledger{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top: 6px;
-    }
-    .entry{
-      border:1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      background: rgba(11,15,12,.55);
-      display:grid;
-      grid-template-columns: 40px 1fr;
-      gap: 10px;
-    }
-    .n{
-      width: 34px; height: 34px;
-      border-radius: 12px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(110,231,168,.14);
-      border: 1px solid rgba(110,231,168,.25);
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .entry h3{
-      margin: 0 0 4px;
-      font-size: 15px;
-    }
-    .entry p{
-      margin: 0;
       color: var(--muted);
       font-size: 13px;
     }
-    .row{
+    .note strong{ color: var(--text); }
+
+    .warn{ color: var(--warn); }
+    .danger{ color: var(--danger); }
+
+    .hr{
+      height: 1px;
+      background: var(--stroke);
+      margin: 14px 0;
+    }
+
+    /* Timeline */
+    .timeline{
       display:flex;
-      flex-wrap:wrap;
-      gap:8px;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .tItem{
+      display:grid;
+      grid-template-columns: 22px 1fr;
+      gap: 10px;
+      padding: 12px 12px;
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: var(--panel2);
+      position: relative;
+      overflow: hidden;
+    }
+    .tDot{
+      width: 12px; height: 12px;
+      border-radius: 999px;
+      background: rgba(110,231,168,.35);
+      border: 1px solid rgba(110,231,168,.35);
+      margin-top: 3px;
+      box-shadow: 0 0 0 4px rgba(110,231,168,.08);
+    }
+    .tTitle{
+      margin: 0 0 4px;
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .tMeta{
+      margin: 0;
+      font-size: 12.8px;
+      color: var(--muted);
+    }
+
+    /* Buttons */
+    .btnRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-top: 10px;
     }
     button{
       appearance:none;
-      border:1px solid rgba(110,231,168,.35);
-      background: rgba(110,231,168,.12);
+      border: 1px solid rgba(110,231,168,.32);
+      background: rgba(110,231,168,.14);
       color: var(--text);
       border-radius: 999px;
-      padding: 10px 12px;
-      font-weight: 650;
+      padding: 11px 14px;
+      font-weight: 700;
       cursor:pointer;
-      transition: transform .06s ease, background .15s ease;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      min-height: 44px; /* better tap target */
     }
-    button:hover{background: rgba(110,231,168,.18)}
-    button:active{transform: translateY(1px)}
+    button:hover{ background: rgba(110,231,168,.19); }
+    button:active{ transform: translateY(1px); }
+
     .ghost{
-      border:1px solid var(--line);
-      background: rgba(11,15,12,.35);
+      border: 1px solid var(--stroke);
+      background: rgba(10, 15, 12, .35);
       color: var(--muted);
-      font-weight: 600;
+      font-weight: 650;
     }
-    .tiny{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 10px;
+
+    /* Two-column layout on larger screens */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
     }
-    .footer{
-      margin-top: 14px;
+    @media (min-width: 860px){
+      .wrap{ padding: 26px 18px 98px; }
+      h1{ font-size: 30px; }
+      .grid{
+        grid-template-columns: 1.15fr .85fr;
+        align-items:start;
+      }
+      .kv{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .kvRow{ height: 100%; }
+    }
+
+    /* Sticky mobile action bar */
+    .actionBar{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 12px 14px;
+      background: linear-gradient(to top, rgba(7,10,8,.92), rgba(7,10,8,.35), transparent);
+      pointer-events: none; /* only buttons clickable */
+    }
+    .actionInner{
+      max-width: var(--max);
+      margin: 0 auto;
       display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      color: var(--muted);
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .actionInner button{
+      flex: 1;
+      justify-content:center;
+      width: 100%;
+    }
+
+    .footer{
+      margin-top: 12px;
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted2);
       font-size: 12px;
     }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 
-Consolas, "Liberation Mono", "Courier New", monospace;}
+
+    .tiny{
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    /* Better selection */
+    ::selection{ background: rgba(110,231,168,.22); }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      button{ transition: none; }
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <div class="top">
+
+    <header class="header">
+      <div class="brandRow">
+        <div class="chip" title="Tap the NFC tag to open this passport page.">
+          <span class="dot"></span>
+          NFC tag active • Scan to learn my history
+        </div>
+        <div class="chip mono" title="Garment ID">#0001</div>
+      </div>
+
       <div>
         <h1>Garment Passport <span class="mono">#0001</span></h1>
-        <p class="subtitle">
-          A future-facing chain-of-custody ledger. The past production 
-history is largely unknown —
+        <p class="sub">
+          A future-facing chain-of-custody ledger. The past production history is largely unknown —
           the future can be documented.
         </p>
       </div>
-      <div class="badge" title="Tap the NFC tag to open this passport 
-page.">
-        <span class="dot"></span>
-        NFC tag active • Scan to learn my history
-      </div>
-    </div>
+    </header>
 
     <div class="grid">
+      <!-- LEFT -->
       <section class="card">
-        <h2>Verified Information</h2>
+        <div class="sectionTitle">Verified Information</div>
         <div class="kv">
-          <div class="k">Item</div><div class="v">Columbia GS Orientation 
-T-Shirt</div>
-          <div class="k">Brand</div><div class="v">Hanes Authentic</div>
-          <div class="k">Material</div><div class="v">100% Cotton / 100% 
-Algodón</div>
-          <div class="k">Manufactured in</div><div class="v">Haiti 
-(HT)</div>
-          <div class="k">RN</div><div class="v mono">15763</div>
-          <div class="k">Garment ID</div><div class="v 
-mono">PTO-HT-0001</div>
+          <div class="kvRow">
+            <div class="k">Item</div>
+            <div class="v">Columbia GS Orientation T-Shirt</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">Brand</div>
+            <div class="v">Hanes Authentic</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">Material</div>
+            <div class="v">100% Cotton / 100% Algodón</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">Manufactured in</div>
+            <div class="v">Haiti (HT)</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">RN</div>
+            <div class="v mono">15763</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">Garment ID</div>
+            <div class="v mono">PTO-HT-0001</div>
+          </div>
         </div>
 
         <div class="hr"></div>
 
-        <h2>Supply Chain Visibility</h2>
-        <div class="row">
-          <span class="pill"><strong>Fiber origin</strong>: <span 
-class="danger">Unknown</span></span>
-          <span class="pill"><strong>Dyeing facility</strong>: <span 
-class="danger">Unknown</span></span>
-          <span class="pill"><strong>Factory name</strong>: <span 
-class="danger">Not disclosed</span></span>
+        <div class="sectionTitle">Supply Chain Visibility</div>
+        <div class="pillRow">
+          <span class="pill"><strong>Fiber origin</strong>: <span class="danger">Unknown</span></span>
+          <span class="pill"><strong>Dyeing facility</strong>: <span class="danger">Unknown</span></span>
+          <span class="pill"><strong>Factory name</strong>: <span class="danger">Not disclosed</span></span>
         </div>
         <p class="note">
-          <strong>Note:</strong> This prototype intentionally shows what 
-remains <span class="warn">invisible</span>
+          <strong>Note:</strong> This prototype intentionally shows what remains <span class="warn">invisible</span>
           in typical garment supply chains.
         </p>
       </section>
 
-      <section class="card">
-        <h2>NFC Micro-Ledger (Tag Payload v1)</h2>
-        <div class="kv">
-          <div class="k">Format</div><div class="v"><span 
-class="mono">PTO|v1</span> (structured text)</div>
-          <div class="k">Stored on tag</div><div class="v">URL + short 
-custody payload</div>
-          <div class="k">Example payload</div>
-          <div class="v mono" id="payloadText">
-            
-PTO|v1|id=0001|mfg=HT|rn=15763|mat=COT100|t=03|last=2025-12|sig=H3K7Q9
+      <!-- RIGHT -->
+      <aside class="card">
+        <div class="sectionTitle">NFC Micro-Ledger</div>
+
+        <div class="kv" style="margin-top:0;">
+          <div class="kvRow">
+            <div class="k">Format</div>
+            <div class="v"><span class="mono">PTO|v1</span> (structured text)</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">Stored on tag</div>
+            <div class="v">URL + short custody payload</div>
+          </div>
+          <div class="kvRow">
+            <div class="k">Example payload</div>
+            <div class="v mono" id="payloadText" style="word-break: break-word;">
+              PTO|v1|id=0001|mfg=HT|rn=15763|mat=COT100|t=03|last=2025-12|sig=H3K7Q9
+            </div>
           </div>
         </div>
+
         <p class="tiny">
-          In Milestone 1, the micro-ledger is a <strong>proof of 
-structure</strong>.
-          The web page visualizes the full ledger and invites the next 
-signature.
+          In Milestone 1, the micro-ledger is a <strong>proof of structure</strong>.
+          The web page visualizes the full ledger and invites the next signature.
         </p>
-        <div class="row">
+
+        <div class="btnRow">
           <button class="ghost" id="copyPayload">Copy payload</button>
-          <button class="ghost" id="resetLocal">Reset demo 
-entries</button>
+          <button class="ghost" id="resetLocal">Reset demo entries</button>
         </div>
-      </section>
+      </aside>
     </div>
 
-    <section class="card" style="margin-top:14px;">
-      <h2>Chain of Custody</h2>
-      <div class="ledger" id="ledger"></div>
+    <section class="card" style="margin-top:12px;">
+      <div class="sectionTitle">Chain of Custody</div>
+      <div class="timeline" id="ledger"></div>
 
       <div class="hr"></div>
 
-      <h2>Next Holder</h2>
+      <div class="sectionTitle">Next Holder</div>
       <p class="note" style="margin-top:0;">
-        Tap <strong>I receive this garment</strong> to add a new custody 
-entry (demo stores locally in this browser).
+        Tap <strong>I receive this garment</strong> to add a new custody entry (stored locally for demo).
       </p>
 
-      <div class="row">
-        <button id="receiveBtn">I receive this garment</button>
-        <button class="ghost" id="toggleGeo">Use my location: Off</button>
+      <div class="btnRow">
+        <button id="toggleGeo" class="ghost">Use my location: Off</button>
       </div>
 
       <div class="footer">
         <div>PassItOn prototype • Milestone 1</div>
-        <div class="mono">Last updated: <span 
-id="lastUpdated">—</span></div>
+        <div class="mono">Last updated: <span id="lastUpdated">—</span></div>
       </div>
     </section>
   </div>
 
+  <!-- Sticky action buttons (mobile-friendly) -->
+  <div class="actionBar" aria-hidden="false">
+    <div class="actionInner">
+      <button id="receiveBtn">I receive this garment</button>
+      <button class="ghost" id="shareBtn" title="Copy link to clipboard">Share</button>
+    </div>
+  </div>
+
   <script>
-    // ---- Config (edit these if you want) ----
+    // ---- Config ----
     const GARMENT_ID = "0001";
     const STORAGE_KEY = `passiton_ledger_${GARMENT_ID}`;
     const DEFAULT_ENTRIES = [
@@ -351,57 +489,23 @@ id="lastUpdated">—</span></div>
     }
 
     function formatMonth(ym) {
-      // ym: YYYY-MM
       const [y,m] = ym.split("-").map(x => parseInt(x,10));
       const date = new Date(y, m-1, 1);
-      return date.toLocaleString(undefined, { month: "long", year: 
-"numeric" });
+      return date.toLocaleString(undefined, { month: "long", year: "numeric" });
     }
 
     function loadLedger() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return [...DEFAULT_ENTRIES];
-      try { return JSON.parse(raw); } catch { return [...DEFAULT_ENTRIES]; 
-}
+      try { return JSON.parse(raw); } catch { return [...DEFAULT_ENTRIES]; }
     }
 
     function saveLedger(entries) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-      document.getElementById("lastUpdated").textContent = new 
-Date().toLocaleString();
-    }
-
-    function renderLedger(entries) {
-      const root = document.getElementById("ledger");
-      root.innerHTML = "";
-      entries.forEach((e, i) => {
-        const el = document.createElement("div");
-        el.className = "entry";
-        el.innerHTML = `
-          <div class="n">${i+1}</div>
-          <div>
-            <h3>${e.type}: ${e.title}</h3>
-            <p>${e.location} • ${formatMonth(e.date)} • Method: 
-${e.method}${e.geo ? ` • Geo: ${e.geo}` : ""}</p>
-          </div>
-        `;
-        root.appendChild(el);
-      });
-
-      // Update payload preview based on latest ledger (simple demo 
-signature)
-      const t = String(entries.length).padStart(2, "0");
-      const last = entries[entries.length - 1]?.date || nowMonth();
-      const sig = demoSig(entries);
-      const payload = 
-`PTO|v1|id=${GARMENT_ID}|mfg=HT|rn=15763|mat=COT100|t=${t}|last=${last}|sig=${sig}`;
-      document.getElementById("payloadText").textContent = payload;
+      document.getElementById("lastUpdated").textContent = new Date().toLocaleString();
     }
 
     function demoSig(entries) {
-      // Milestone 1-friendly "signature": take initials of last receiver 
-+ count + month -> compact token
-      // Not cryptographic; it's a readable proof of a chaining rule.
       const lastTitle = entries[entries.length - 1]?.title || "";
       const receiver = lastTitle.split("→").pop()?.trim() || "NA";
       const initials = receiver
@@ -412,8 +516,7 @@ signature)
         .slice(0, 2)
         .padEnd(2, "X");
       const count = String(entries.length).padStart(2, "0");
-      const last = (entries[entries.length - 1]?.date || 
-nowMonth()).replace("-", "");
+      const last = (entries[entries.length - 1]?.date || nowMonth()).replace("-", "");
       return `${initials}${count}${last}`; // e.g., SE03202512
     }
 
@@ -431,16 +534,46 @@ nowMonth()).replace("-", "");
       });
     }
 
+    function renderLedger(entries) {
+      const root = document.getElementById("ledger");
+      root.innerHTML = "";
+      entries.forEach((e) => {
+        const el = document.createElement("div");
+        el.className = "tItem";
+        el.innerHTML = `
+          <div class="tDot" aria-hidden="true"></div>
+          <div>
+            <div class="tTitle">${escapeHtml(e.type)}: ${escapeHtml(e.title)}</div>
+            <p class="tMeta">${escapeHtml(e.location)} • ${escapeHtml(formatMonth(e.date))} • Method: ${escapeHtml(e.method)}${e.geo ? ` • Geo: ${escapeHtml(e.geo)}` : ""}</p>
+          </div>
+        `;
+        root.appendChild(el);
+      });
+
+      // Update payload preview based on latest ledger
+      const t = String(entries.length).padStart(2, "0");
+      const last = entries[entries.length - 1]?.date || nowMonth();
+      const sig = demoSig(entries);
+      const payload = `PTO|v1|id=${GARMENT_ID}|mfg=HT|rn=15763|mat=COT100|t=${t}|last=${last}|sig=${sig}`;
+      document.getElementById("payloadText").textContent = payload;
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
     // ---- Events ----
-    document.getElementById("receiveBtn").addEventListener("click", async 
-() => {
+    document.getElementById("receiveBtn").addEventListener("click", async () => {
       const name = prompt("Your name (for the ledger):");
       if (!name || !name.trim()) return;
 
-      const city = prompt("City (e.g., New York, NY):", "New York, NY") || 
-"—";
-      const method = prompt("Method (Gift / Donation / Resale / etc.):", 
-"Gift / hand-me-down") || "—";
+      const city = prompt("City (e.g., New York, NY):", "New York, NY") || "—";
+      const method = prompt("Method (Gift / Donation / Resale / etc.):", "Gift / hand-me-down") || "—";
       const date = nowMonth();
 
       let geo = null;
@@ -463,12 +596,10 @@ nowMonth()).replace("-", "");
 
     document.getElementById("toggleGeo").addEventListener("click", () => {
       useGeo = !useGeo;
-      document.getElementById("toggleGeo").textContent = `Use my location: 
-${useGeo ? "On" : "Off"}`;
+      document.getElementById("toggleGeo").textContent = `Use my location: ${useGeo ? "On" : "Off"}`;
     });
 
-    document.getElementById("resetLocal").addEventListener("click", () => 
-{
+    document.getElementById("resetLocal").addEventListener("click", () => {
       localStorage.removeItem(STORAGE_KEY);
       const entries = loadLedger();
       saveLedger(entries);
@@ -476,14 +607,27 @@ ${useGeo ? "On" : "Off"}`;
       alert("Reset complete.");
     });
 
-    document.getElementById("copyPayload").addEventListener("click", async 
-() => {
+    document.getElementById("copyPayload").addEventListener("click", async () => {
       const text = document.getElementById("payloadText").textContent;
       try{
         await navigator.clipboard.writeText(text);
         alert("Copied payload.");
       }catch{
         prompt("Copy this payload:", text);
+      }
+    });
+
+    document.getElementById("shareBtn").addEventListener("click", async () => {
+      const url = window.location.href;
+      if (navigator.share) {
+        try { await navigator.share({ title: "PassItOn — Garment Passport #0001", url }); return; }
+        catch { /* fall back */ }
+      }
+      try{
+        await navigator.clipboard.writeText(url);
+        alert("Link copied.");
+      }catch{
+        prompt("Copy link:", url);
       }
     });
 
@@ -494,4 +638,3 @@ ${useGeo ? "On" : "Off"}`;
   </script>
 </body>
 </html>
-
