@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PassItOn — Garment Passport #0001</title>
-  <meta name="description" content="Garment Passport — Chain of Custody (Future-Facing Ledger)" />
+  <meta name="description" content="Garment Passport — Chain of Custody 
+(Future-Facing Ledger)" />
   <style>
     :root{
       --bg:#0b0f0c;
@@ -20,9 +21,12 @@
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 20% -10%, rgba(110,231,168,.18), transparent 55%),
-                  radial-gradient(900px 500px at 100% 0%, rgba(255,210,122,.10), transparent 60%),
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, 
+Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% -10%, 
+rgba(110,231,168,.18), transparent 55%),
+                  radial-gradient(900px 500px at 100% 0%, 
+rgba(255,210,122,.10), transparent 60%),
                   var(--bg);
       color:var(--text);
       line-height:1.35;
@@ -199,7 +203,8 @@
       color: var(--muted);
       font-size: 12px;
     }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 
+Consolas, "Liberation Mono", "Courier New", monospace;}
   </style>
 </head>
 <body>
@@ -208,11 +213,13 @@
       <div>
         <h1>Garment Passport <span class="mono">#0001</span></h1>
         <p class="subtitle">
-          A future-facing chain-of-custody ledger. The past production history is largely unknown —
+          A future-facing chain-of-custody ledger. The past production 
+history is largely unknown —
           the future can be documented.
         </p>
       </div>
-      <div class="badge" title="Tap the NFC tag to open this passport page.">
+      <div class="badge" title="Tap the NFC tag to open this passport 
+page.">
         <span class="dot"></span>
         NFC tag active • Scan to learn my history
       </div>
@@ -222,24 +229,32 @@
       <section class="card">
         <h2>Verified Information</h2>
         <div class="kv">
-          <div class="k">Item</div><div class="v">Columbia GS Orientation T-Shirt</div>
+          <div class="k">Item</div><div class="v">Columbia GS Orientation 
+T-Shirt</div>
           <div class="k">Brand</div><div class="v">Hanes Authentic</div>
-          <div class="k">Material</div><div class="v">100% Cotton / 100% Algodón</div>
-          <div class="k">Manufactured in</div><div class="v">Haiti (HT)</div>
+          <div class="k">Material</div><div class="v">100% Cotton / 100% 
+Algodón</div>
+          <div class="k">Manufactured in</div><div class="v">Haiti 
+(HT)</div>
           <div class="k">RN</div><div class="v mono">15763</div>
-          <div class="k">Garment ID</div><div class="v mono">PTO-HT-0001</div>
+          <div class="k">Garment ID</div><div class="v 
+mono">PTO-HT-0001</div>
         </div>
 
         <div class="hr"></div>
 
         <h2>Supply Chain Visibility</h2>
         <div class="row">
-          <span class="pill"><strong>Fiber origin</strong>: <span class="danger">Unknown</span></span>
-          <span class="pill"><strong>Dyeing facility</strong>: <span class="danger">Unknown</span></span>
-          <span class="pill"><strong>Factory name</strong>: <span class="danger">Not disclosed</span></span>
+          <span class="pill"><strong>Fiber origin</strong>: <span 
+class="danger">Unknown</span></span>
+          <span class="pill"><strong>Dyeing facility</strong>: <span 
+class="danger">Unknown</span></span>
+          <span class="pill"><strong>Factory name</strong>: <span 
+class="danger">Not disclosed</span></span>
         </div>
         <p class="note">
-          <strong>Note:</strong> This prototype intentionally shows what remains <span class="warn">invisible</span>
+          <strong>Note:</strong> This prototype intentionally shows what 
+remains <span class="warn">invisible</span>
           in typical garment supply chains.
         </p>
       </section>
@@ -247,20 +262,26 @@
       <section class="card">
         <h2>NFC Micro-Ledger (Tag Payload v1)</h2>
         <div class="kv">
-          <div class="k">Format</div><div class="v"><span class="mono">PTO|v1</span> (structured text)</div>
-          <div class="k">Stored on tag</div><div class="v">URL + short custody payload</div>
+          <div class="k">Format</div><div class="v"><span 
+class="mono">PTO|v1</span> (structured text)</div>
+          <div class="k">Stored on tag</div><div class="v">URL + short 
+custody payload</div>
           <div class="k">Example payload</div>
           <div class="v mono" id="payloadText">
-            PTO|v1|id=0001|mfg=HT|rn=15763|mat=COT100|t=03|last=2025-12|sig=H3K7Q9
+            
+PTO|v1|id=0001|mfg=HT|rn=15763|mat=COT100|t=03|last=2025-12|sig=H3K7Q9
           </div>
         </div>
         <p class="tiny">
-          In Milestone 1, the micro-ledger is a <strong>proof of structure</strong>.
-          The web page visualizes the full ledger and invites the next signature.
+          In Milestone 1, the micro-ledger is a <strong>proof of 
+structure</strong>.
+          The web page visualizes the full ledger and invites the next 
+signature.
         </p>
         <div class="row">
           <button class="ghost" id="copyPayload">Copy payload</button>
-          <button class="ghost" id="resetLocal">Reset demo entries</button>
+          <button class="ghost" id="resetLocal">Reset demo 
+entries</button>
         </div>
       </section>
     </div>
@@ -273,7 +294,8 @@
 
       <h2>Next Holder</h2>
       <p class="note" style="margin-top:0;">
-        Tap <strong>I receive this garment</strong> to add a new custody entry (demo stores locally in this browser).
+        Tap <strong>I receive this garment</strong> to add a new custody 
+entry (demo stores locally in this browser).
       </p>
 
       <div class="row">
@@ -283,7 +305,8 @@
 
       <div class="footer">
         <div>PassItOn prototype • Milestone 1</div>
-        <div class="mono">Last updated: <span id="lastUpdated">—</span></div>
+        <div class="mono">Last updated: <span 
+id="lastUpdated">—</span></div>
       </div>
     </section>
   </div>
@@ -331,18 +354,21 @@
       // ym: YYYY-MM
       const [y,m] = ym.split("-").map(x => parseInt(x,10));
       const date = new Date(y, m-1, 1);
-      return date.toLocaleString(undefined, { month: "long", year: "numeric" });
+      return date.toLocaleString(undefined, { month: "long", year: 
+"numeric" });
     }
 
     function loadLedger() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return [...DEFAULT_ENTRIES];
-      try { return JSON.parse(raw); } catch { return [...DEFAULT_ENTRIES]; }
+      try { return JSON.parse(raw); } catch { return [...DEFAULT_ENTRIES]; 
+}
     }
 
     function saveLedger(entries) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-      document.getElementById("lastUpdated").textContent = new Date().toLocaleString();
+      document.getElementById("lastUpdated").textContent = new 
+Date().toLocaleString();
     }
 
     function renderLedger(entries) {
@@ -355,22 +381,26 @@
           <div class="n">${i+1}</div>
           <div>
             <h3>${e.type}: ${e.title}</h3>
-            <p>${e.location} • ${formatMonth(e.date)} • Method: ${e.method}${e.geo ? ` • Geo: ${e.geo}` : ""}</p>
+            <p>${e.location} • ${formatMonth(e.date)} • Method: 
+${e.method}${e.geo ? ` • Geo: ${e.geo}` : ""}</p>
           </div>
         `;
         root.appendChild(el);
       });
 
-      // Update payload preview based on latest ledger (simple demo signature)
+      // Update payload preview based on latest ledger (simple demo 
+signature)
       const t = String(entries.length).padStart(2, "0");
       const last = entries[entries.length - 1]?.date || nowMonth();
       const sig = demoSig(entries);
-      const payload = `PTO|v1|id=${GARMENT_ID}|mfg=HT|rn=15763|mat=COT100|t=${t}|last=${last}|sig=${sig}`;
+      const payload = 
+`PTO|v1|id=${GARMENT_ID}|mfg=HT|rn=15763|mat=COT100|t=${t}|last=${last}|sig=${sig}`;
       document.getElementById("payloadText").textContent = payload;
     }
 
     function demoSig(entries) {
-      // Milestone 1-friendly "signature": take initials of last receiver + count + month -> compact token
+      // Milestone 1-friendly "signature": take initials of last receiver 
++ count + month -> compact token
       // Not cryptographic; it's a readable proof of a chaining rule.
       const lastTitle = entries[entries.length - 1]?.title || "";
       const receiver = lastTitle.split("→").pop()?.trim() || "NA";
@@ -382,7 +412,8 @@
         .slice(0, 2)
         .padEnd(2, "X");
       const count = String(entries.length).padStart(2, "0");
-      const last = (entries[entries.length - 1]?.date || nowMonth()).replace("-", "");
+      const last = (entries[entries.length - 1]?.date || 
+nowMonth()).replace("-", "");
       return `${initials}${count}${last}`; // e.g., SE03202512
     }
 
@@ -401,12 +432,15 @@
     }
 
     // ---- Events ----
-    document.getElementById("receiveBtn").addEventListener("click", async () => {
+    document.getElementById("receiveBtn").addEventListener("click", async 
+() => {
       const name = prompt("Your name (for the ledger):");
       if (!name || !name.trim()) return;
 
-      const city = prompt("City (e.g., New York, NY):", "New York, NY") || "—";
-      const method = prompt("Method (Gift / Donation / Resale / etc.):", "Gift / hand-me-down") || "—";
+      const city = prompt("City (e.g., New York, NY):", "New York, NY") || 
+"—";
+      const method = prompt("Method (Gift / Donation / Resale / etc.):", 
+"Gift / hand-me-down") || "—";
       const date = nowMonth();
 
       let geo = null;
@@ -429,10 +463,12 @@
 
     document.getElementById("toggleGeo").addEventListener("click", () => {
       useGeo = !useGeo;
-      document.getElementById("toggleGeo").textContent = `Use my location: ${useGeo ? "On" : "Off"}`;
+      document.getElementById("toggleGeo").textContent = `Use my location: 
+${useGeo ? "On" : "Off"}`;
     });
 
-    document.getElementById("resetLocal").addEventListener("click", () => {
+    document.getElementById("resetLocal").addEventListener("click", () => 
+{
       localStorage.removeItem(STORAGE_KEY);
       const entries = loadLedger();
       saveLedger(entries);
@@ -440,7 +476,8 @@
       alert("Reset complete.");
     });
 
-    document.getElementById("copyPayload").addEventListener("click", async () => {
+    document.getElementById("copyPayload").addEventListener("click", async 
+() => {
       const text = document.getElementById("payloadText").textContent;
       try{
         await navigator.clipboard.writeText(text);
@@ -457,3 +494,4 @@
   </script>
 </body>
 </html>
+
