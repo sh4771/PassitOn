@@ -14,7 +14,7 @@ const garmentColors: Record<string, string> = {
   "0006": "#c5a56f",
 };
 
-const recentlyPassedIds = ["0002", "0003", "0004"];
+const recentlyPassedIds = ["0001", "0002", "0003", "0004"];
 const yourCollectionIds = ["0007", "0008", "0009", "0010", "0011"];
 
 export default function Home() {
@@ -72,10 +72,16 @@ export default function Home() {
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -4 }}
               >
-                <div 
-                  className="h-[120px] mx-3 mt-3 rounded-[14px]"
-                  style={{ backgroundColor: garmentColors[item.id] || "#a89478" }}
-                />
+                {item.image ? (
+                  <div className="h-[120px] mx-3 mt-3 rounded-[14px] overflow-hidden relative">
+                    <Image src={item.image} alt={item.name} fill className="object-cover" sizes="120px" />
+                  </div>
+                ) : (
+                  <div 
+                    className="h-[120px] mx-3 mt-3 rounded-[14px]"
+                    style={{ backgroundColor: garmentColors[item.id] || "#a89478" }}
+                  />
+                )}
                 <div className="p-4 pt-3">
                   <p className="text-sm font-semibold text-[#1a1a1a] truncate">{item.name}</p>
                   <p className="text-[11px] text-[#7a6f5c] mt-0.5">
