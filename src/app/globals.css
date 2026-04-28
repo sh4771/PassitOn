@@ -1,31 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --background-warm: #f5f2ed;
-  --foreground: #fafafa;
-  --foreground-dark: #1c1c1a;
-  --accent: #8b9a8b;
+  --cream: #faf5e8;
+  --cream-dark: #f5eddd;
+  --dark: #1a1a1a;
+  --dark-brown: #2c2a26;
+  --dark-card: #3d3b36;
+  --terracotta: #d9633b;
+  --terracotta-light: rgba(217, 99, 59, 0.5);
+  --rust: #a0623e;
+  --gold: #c5a56f;
+  --olive: #7a6f5c;
+  --olive-light: #a89a7e;
+  --beige: #e5dbc4;
+  --delete-red: #b0432a;
+  
+  --blue-slate: #2d3f5c;
+  --tan: #a89478;
+  --steel-blue: #5c7891;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-background-warm: var(--background-warm);
-  --color-foreground: var(--foreground);
-  --color-foreground-dark: var(--foreground-dark);
-  --color-accent: var(--accent);
-  --font-serif: var(--font-lora);
-  --font-mono: var(--font-ibm-mono);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-dark: var(--dark);
+  --color-dark-brown: var(--dark-brown);
+  --color-dark-card: var(--dark-card);
+  --color-terracotta: var(--terracotta);
+  --color-rust: var(--rust);
+  --color-gold: var(--gold);
+  --color-olive: var(--olive);
+  --color-olive-light: var(--olive-light);
+  --color-beige: var(--beige);
+  --font-sans: var(--font-inter);
 }
 
 body {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--dark);
 }
 
-.font-serif {
-  font-family: var(--font-serif), Georgia, serif;
-}
-
-.font-mono {
-  font-family: var(--font-mono), monospace;
+.font-sans {
+  font-family: 'Inter', system-ui, sans-serif;
 }
