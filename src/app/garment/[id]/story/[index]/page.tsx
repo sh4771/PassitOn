@@ -1,11 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getStoredGarment } from "@/lib/garmentStore";
+import { getStoredGarment, updateTransfer, deleteTransfer } from "@/lib/garmentStore";
 import type { Garment } from "@/data/garments";
 
 const cityThemes: Record<string, { borderColor: string; accentColor: string; stampBg: string }> = {
@@ -30,11 +30,35 @@ export default function StoryDetailPage() {
   const storyIndex = parseInt(params.index as string, 10);
 
   const [garment, setGarment] = useState<Garment | undefined>(undefined);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedQuote, setEditedQuote] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     const stored = getStoredGarment(garmentId);
     setGarment(stored);
-  }, [garmentId]);
+    if (stored?.transfers[storyIndex]) {
+      setEditedQuote(stored.transfers[storyIndex].quote);
+    }
+  }, [garmentId, storyIndex]);
+
+  const handleSaveEdit = () => {
+    if (!editedQuote.trim()) return;
+    const updated = updateTransfer(garmentId, storyIndex, { quote: editedQuote });
+    if (updated) {
+      setGarment(updated);
+      setIsEditing(false);
+    }
+  };
+
+  const handleDelete = () => {
+    const updated = deleteTransfer(garmentId, storyIndex);
+    if (updated) {
+      router.push(`/garment/${garmentId}`);
+    }
+  };
+
+  const isUserEntry = garment?.transfers[storyIndex]?.name === "You";
   
   if (!garment) {
     return (
@@ -127,32 +151,126 @@ export default function StoryDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-lg text-[#1a1a1a] leading-[32px]">
-            "{currentStory.quote}"
-          </p>
+          {isEditing ? (
+            <div>
+              <textarea
+                value={editedQuote}
+                onChange={(e) => setEditedQuote(e.target.value)}
+                className="w-full h-40 text-lg text-[#1a1a1a] leading-[32px] bg-[#faf5e8] rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-[#d9633b]/50 resize-none"
+                autoFocus
+              />
+              <div className="flex gap-3 mt-4">
+                <button
+                  onClick={handleSaveEdit}
+                  className="flex-1 py-3 bg-[#d9633b] text-white font-semibold rounded-full"
+                >
+                  Save changes
+                </button>
+                <button
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditedQuote(currentStory.quote);
+                  }}
+                  className="px-6 py-3 bg-[#e5dbc4] text-[#1a1a1a] font-semibold rounded-full"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="text-lg text-[#1a1a1a] leading-[32px]">
+              "{currentStory.quote}"
+            </p>
+          )}
         </motion.div>
 
-        {currentStory.isCurrent && (
+        <div className="flex items-center gap-3 mt-4 flex-wrap">
+          {currentStory.isCurrent && (
+            <motion.div
+              className="px-4 py-2 rounded-full inline-flex items-center gap-2"
+              style={{ backgroundColor: `${theme.accentColor}15` }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div 
+                className="w-2 h-2 rounded-full" 
+                style={{ backgroundColor: theme.accentColor }}
+              />
+              <span 
+                className="text-sm font-medium"
+                style={{ color: theme.accentColor }}
+              >
+                Current holder
+              </span>
+            </motion.div>
+          )}
+
+          {isUserEntry && !isEditing && (
+            <>
+              <motion.button
+                onClick={() => setIsEditing(true)}
+                className="px-4 py-2 bg-white border-[1.5px] border-[#e5dbc4] rounded-full flex items-center gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.35 }}
+              >
+                <div className="w-3 h-0.5 bg-[#1a1a1a] rounded-sm" />
+                <span className="text-sm font-semibold text-[#1a1a1a]">Edit</span>
+              </motion.button>
+              <motion.button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="px-4 py-2 bg-white border-[1.5px] border-[rgba(176,67,42,0.4)] rounded-full flex items-center gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="w-3.5 h-2 bg-[#b0432a] rounded-sm" />
+                <span className="text-sm font-semibold text-[#b0432a]">Delete</span>
+              </motion.button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {showDeleteConfirm && (
           <motion.div
-            className="mt-4 px-4 py-2 rounded-full inline-flex items-center gap-2"
-            style={{ backgroundColor: `${theme.accentColor}15` }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowDeleteConfirm(false)}
           >
-            <div 
-              className="w-2 h-2 rounded-full" 
-              style={{ backgroundColor: theme.accentColor }}
-            />
-            <span 
-              className="text-sm font-medium"
-              style={{ color: theme.accentColor }}
+            <motion.div
+              className="w-full max-w-sm bg-white rounded-[28px] p-6"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
             >
-              Current holder
-            </span>
+              <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">Delete this story?</h3>
+              <p className="text-sm text-[#7a6f5c] mb-6">
+                This action cannot be undone. Your story will be permanently removed from this garment's chain.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="flex-1 py-3 bg-[#e5dbc4] text-[#1a1a1a] font-semibold rounded-full"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex-1 py-3 bg-[#b0432a] text-white font-semibold rounded-full"
+                >
+                  Delete
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
-      </div>
+      </AnimatePresence>
 
       <section className="px-8 mt-10">
         <p className="text-xs font-medium tracking-[2px] text-[#7a6f5c] mb-4">OTHER STORIES</p>

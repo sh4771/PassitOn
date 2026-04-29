@@ -54,6 +54,68 @@ export function addTransferToGarment(
   return updatedGarment;
 }
 
+export function updateTransfer(
+  garmentId: string,
+  transferIndex: number,
+  updatedTransfer: Partial<Transfer>
+): Garment | undefined {
+  if (typeof window === "undefined") return undefined;
+  
+  const garments = getStoredGarments();
+  const garment = garments[garmentId];
+  
+  if (!garment || !garment.transfers[transferIndex]) return undefined;
+
+  const updatedGarment: Garment = {
+    ...garment,
+    transfers: garment.transfers.map((t, i) => 
+      i === transferIndex ? { ...t, ...updatedTransfer } : t
+    ),
+  };
+
+  const updatedGarments = {
+    ...garments,
+    [garmentId]: updatedGarment,
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedGarments));
+  
+  return updatedGarment;
+}
+
+export function deleteTransfer(
+  garmentId: string,
+  transferIndex: number
+): Garment | undefined {
+  if (typeof window === "undefined") return undefined;
+  
+  const garments = getStoredGarments();
+  const garment = garments[garmentId];
+  
+  if (!garment || !garment.transfers[transferIndex]) return undefined;
+
+  const newTransfers = garment.transfers.filter((_, i) => i !== transferIndex);
+  
+  if (newTransfers.length > 0 && !newTransfers.some(t => t.isCurrent)) {
+    newTransfers[newTransfers.length - 1].isCurrent = true;
+  }
+
+  const updatedGarment: Garment = {
+    ...garment,
+    totalHolders: Math.max(garment.totalHolders - 1, newTransfers.length),
+    transfers: newTransfers,
+  };
+
+  const updatedGarments = {
+    ...garments,
+    [garmentId]: updatedGarment,
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedGarments));
+  
+  return updatedGarment;
+}
+
 export function clearStoredGarments(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEY);

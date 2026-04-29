@@ -75,7 +75,7 @@ export function GarmentPage({ garment: initialGarment }: GarmentPageProps) {
 
           return (
             <StoryCard
-              key={`${transfer.name}-${transfer.date}`}
+              key={`transfer-${reverseIndex}`}
               transfer={transfer}
               garmentName={garment.name}
               garmentId={garment.id}
@@ -123,24 +123,29 @@ export function GarmentPage({ garment: initialGarment }: GarmentPageProps) {
       <section className="px-8 mt-10">
         <h3 className="text-xl font-bold text-[#1a1a1a] mb-4">Previous hands</h3>
         <div className="space-y-2">
-          {garment.transfers.slice().reverse().map((transfer, i) => (
-            <motion.div
-              key={i}
-              className="flex items-center gap-4 py-2"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + i * 0.1 }}
-            >
-              <div className="w-10 h-10 rounded-full bg-[#e5dbc4] flex items-center justify-center">
-                <span className="text-sm font-semibold text-[#1a1a1a]">{transfer.name.charAt(0)}</span>
-              </div>
-              <div className="flex-1">
-                <p className="text-[15px] font-medium text-[#1a1a1a]">{transfer.name} · {transfer.city}</p>
-                <p className="text-xs text-[#7a6f5c]">{transfer.date.split(" ")[1] || transfer.date}</p>
-              </div>
-              <span className="text-2xl text-[#a89a7e]">›</span>
-            </motion.div>
-          ))}
+          {garment.transfers.slice().reverse().map((transfer, i) => {
+            const originalIndex = totalCards - 1 - i;
+            return (
+              <Link key={i} href={`/garment/${garment.id}/story/${originalIndex}`}>
+                <motion.div
+                  className="flex items-center gap-4 py-2 cursor-pointer"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  whileHover={{ x: 4 }}
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#e5dbc4] flex items-center justify-center">
+                    <span className="text-sm font-semibold text-[#1a1a1a]">{transfer.name.charAt(0)}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[15px] font-medium text-[#1a1a1a]">{transfer.name} · {transfer.city}</p>
+                    <p className="text-xs text-[#7a6f5c]">{transfer.date.split(" ")[1] || transfer.date}</p>
+                  </div>
+                  <span className="text-2xl text-[#a89a7e]">›</span>
+                </motion.div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
