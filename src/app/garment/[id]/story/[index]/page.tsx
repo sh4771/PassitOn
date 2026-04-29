@@ -4,7 +4,24 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { garments } from "@/data/garments";
+import { useState, useEffect } from "react";
+import { getStoredGarment } from "@/lib/garmentStore";
+import type { Garment } from "@/data/garments";
+
+const cityThemes: Record<string, { borderColor: string; accentColor: string; stampBg: string }> = {
+  "New York": { borderColor: "#1a2840", accentColor: "#1a2840", stampBg: "#e8edf5" },
+  "Los Angeles": { borderColor: "#a0623e", accentColor: "#a0623e", stampBg: "#f8dcc4" },
+  "Boston": { borderColor: "#8b2942", accentColor: "#8b2942", stampBg: "#f5e8ec" },
+  "Barcelona": { borderColor: "#c5a56f", accentColor: "#c5a56f", stampBg: "#faf5e8" },
+  "London": { borderColor: "#4a5568", accentColor: "#4a5568", stampBg: "#e8ecf0" },
+  "Paris": { borderColor: "#7a6f5c", accentColor: "#7a6f5c", stampBg: "#f5f2ed" },
+  "Tokyo": { borderColor: "#d9633b", accentColor: "#d9633b", stampBg: "#fdf2ee" },
+  "Miami": { borderColor: "#2d8f8f", accentColor: "#2d8f8f", stampBg: "#e8f5f5" },
+  "Seoul": { borderColor: "#5c4a7a", accentColor: "#5c4a7a", stampBg: "#f0ecf5" },
+  "Berlin": { borderColor: "#3d3d3d", accentColor: "#3d3d3d", stampBg: "#ececec" },
+};
+
+const defaultTheme = { borderColor: "#7a6f5c", accentColor: "#a0623e", stampBg: "#faf5e8" };
 
 export default function StoryDetailPage() {
   const params = useParams();
@@ -12,10 +29,19 @@ export default function StoryDetailPage() {
   const garmentId = params.id as string;
   const storyIndex = parseInt(params.index as string, 10);
 
-  const garment = garments[garmentId];
+  const [garment, setGarment] = useState<Garment | undefined>(undefined);
+
+  useEffect(() => {
+    const stored = getStoredGarment(garmentId);
+    setGarment(stored);
+  }, [garmentId]);
   
   if (!garment) {
-    return <div>Garment not found</div>;
+    return (
+      <div className="min-h-screen bg-[#faf5e8] flex items-center justify-center">
+        <p className="text-[#7a6f5c]">Loading...</p>
+      </div>
+    );
   }
 
   const totalStories = garment.transfers.length;
@@ -24,8 +50,14 @@ export default function StoryDetailPage() {
   const transfers = garment.transfers;
 
   if (!currentStory) {
-    return <div>Story not found</div>;
+    return (
+      <div className="min-h-screen bg-[#faf5e8] flex items-center justify-center">
+        <p className="text-[#7a6f5c]">Story not found</p>
+      </div>
+    );
   }
+
+  const theme = cityThemes[currentStory.city] || defaultTheme;
 
   const goToStory = (index: number) => {
     if (index >= 0 && index < totalStories) {
@@ -74,16 +106,23 @@ export default function StoryDetailPage() {
           <p className="text-xs font-medium tracking-[2px] text-[#7a6f5c] mb-2">
             {currentStory.date} · OWNER {String(ownerNumber).padStart(2, "0")} / {String(totalStories).padStart(2, "0")}
           </p>
-          <h1 className="text-[32px] font-bold text-[#1a1a1a] leading-tight mb-2">
-            {currentStory.name}
+          <h1 
+            className="text-[32px] font-bold leading-tight mb-2"
+            style={{ color: theme.accentColor }}
+          >
+            {currentStory.city}
           </h1>
           <p className="text-base text-[#7a6f5c] mb-6">
-            {currentStory.city} · {currentStory.action}
+            {currentStory.name} · {currentStory.action}
           </p>
         </motion.div>
 
         <motion.div
-          className="bg-white rounded-[28px] p-8 shadow-lg"
+          className="bg-white rounded-[28px] p-8"
+          style={{ 
+            border: `2px solid ${theme.borderColor}`,
+            boxShadow: "0 16px 40px rgba(0,0,0,0.08)"
+          }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -95,13 +134,22 @@ export default function StoryDetailPage() {
 
         {currentStory.isCurrent && (
           <motion.div
-            className="mt-4 px-4 py-2 bg-[#d9633b]/10 rounded-full inline-flex items-center gap-2"
+            className="mt-4 px-4 py-2 rounded-full inline-flex items-center gap-2"
+            style={{ backgroundColor: `${theme.accentColor}15` }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            <div className="w-2 h-2 rounded-full bg-[#d9633b]" />
-            <span className="text-sm font-medium text-[#d9633b]">Current holder</span>
+            <div 
+              className="w-2 h-2 rounded-full" 
+              style={{ backgroundColor: theme.accentColor }}
+            />
+            <span 
+              className="text-sm font-medium"
+              style={{ color: theme.accentColor }}
+            >
+              Current holder
+            </span>
           </motion.div>
         )}
       </div>

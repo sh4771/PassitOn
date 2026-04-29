@@ -7,14 +7,9 @@ import { garments } from "@/data/garments";
 
 const garmentColors: Record<string, string> = {
   "0001": "#75b4e3",
-  "0002": "#2d3f5c",
-  "0003": "#a89478",
-  "0004": "#5c7891",
-  "0005": "#a89478",
-  "0006": "#c5a56f",
 };
 
-const recentlyPassedIds = ["0001", "0002", "0003", "0004"];
+const recentlyPassedIds = ["0001"];
 const yourCollectionIds = ["0007", "0008", "0009", "0010", "0011"];
 
 export default function Home() {

@@ -3,19 +3,29 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Garment } from "@/data/garments";
+import { StoryCard } from "@/components/StoryCard";
+import { getStoredGarment } from "@/lib/garmentStore";
 
 interface GarmentPageProps {
   garment: Garment;
 }
 
-export function GarmentPage({ garment }: GarmentPageProps) {
+export function GarmentPage({ garment: initialGarment }: GarmentPageProps) {
+  const [garment, setGarment] = useState(initialGarment);
   const [currentCard, setCurrentCard] = useState(0);
+  
+  useEffect(() => {
+    const stored = getStoredGarment(initialGarment.id);
+    if (stored) {
+      setGarment(stored);
+    }
+  }, [initialGarment.id]);
+
   const totalCards = garment.transfers.length;
 
   const nextCard = () => setCurrentCard((prev) => Math.min(prev + 1, totalCards - 1));
-  const prevCard = () => setCurrentCard((prev) => Math.max(prev - 1, 0));
 
   return (
     <div className="min-h-screen bg-[#faf5e8]">
@@ -55,7 +65,7 @@ export function GarmentPage({ garment }: GarmentPageProps) {
         </div>
       </div>
 
-      <div className="relative mt-8 px-8 h-[340px]" onClick={nextCard}>
+      <div className="relative mt-8 px-8 h-[420px]" onClick={nextCard}>
         {garment.transfers.slice().reverse().map((transfer, index) => {
           const reverseIndex = totalCards - 1 - index;
           const offset = reverseIndex - currentCard;
@@ -64,47 +74,20 @@ export function GarmentPage({ garment }: GarmentPageProps) {
           if (offset < 0 || offset > 2) return null;
 
           return (
-            <motion.div
+            <StoryCard
               key={`${transfer.name}-${transfer.date}`}
-              className="absolute left-8 right-8 bg-white rounded-[28px] p-8 cursor-pointer"
-              style={{
-                boxShadow: isActive ? "0 18px 40px rgba(0,0,0,0.12)" : "none",
-                zIndex: 10 - offset,
-              }}
-              initial={false}
-              animate={{
-                y: offset * 20,
-                x: offset * 18,
-                opacity: 1 - offset * 0.25,
-                scale: 1 - offset * 0.03,
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              <div className="flex justify-between items-start mb-4">
-                <p className="text-xs font-medium tracking-[2px] text-[#7a6f5c]">{transfer.date.toUpperCase()}</p>
-                <p className="text-xs font-medium tracking-[2px] text-[#7a6f5c]">
-                  OWNER {String(totalCards - reverseIndex).padStart(2, "0")} / {String(totalCards).padStart(2, "0")}
-                </p>
-              </div>
-              <h2 className="text-[28px] font-bold text-[#1a1a1a] mb-6">
-                {transfer.city}
-              </h2>
-              <p className="text-base text-[#1a1a1a] leading-[28px] line-clamp-4">
-                {transfer.quote}
-              </p>
-              <div className="flex items-center justify-between mt-8">
-                <Link 
-                  href={`/garment/${garment.id}/story/${reverseIndex}`}
-                  className="flex items-center gap-2 text-sm font-semibold text-[#a0623e]"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Read full story <span className="font-bold">→</span>
-                </Link>
-                <p className="text-[13px] text-[#7a6f5c]">
-                  page {currentCard + 1} / {totalCards}
-                </p>
-              </div>
-            </motion.div>
+              transfer={transfer}
+              garmentName={garment.name}
+              garmentId={garment.id}
+              ownerNumber={totalCards - reverseIndex}
+              totalOwners={totalCards}
+              currentPage={currentCard + 1}
+              totalPages={totalCards}
+              reverseIndex={reverseIndex}
+              isActive={isActive}
+              offset={offset}
+              onClick={nextCard}
+            />
           );
         })}
       </div>
